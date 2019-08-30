@@ -24,6 +24,10 @@ tags:强化学习
 
 
 
+## Q-Learning Gamma
+
+![gamma](https://morvanzhou.github.io/static/results/ML-intro/q5.png)
+
 ## 例子:
 
 ```
