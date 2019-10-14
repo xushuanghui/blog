@@ -1,7 +1,7 @@
 ---
 title: Sarsa算法
 date: 2019-04-01 17:27:08
-tags:强化学习
+tags: 强化学习
 ---
 
 ## Sarsa 更新行为准则 
