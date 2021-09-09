@@ -161,6 +161,8 @@ module CocoapodsGitHooks
 end
 ```
 
+<!--more-->
+
 ### 注册CocoaPods钩子
 
 现在让我们在每次pod install 或pod update之后调用sync方法。为此，我们需要在CocoaPods钩子管理器中注册post_install和post_update钩子。打开lib/cocoapods_plugin.rb写下下面的内容：

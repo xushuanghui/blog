@@ -115,6 +115,8 @@ void Swizzle(Class class, SEL originalSelector, Method swizzledMethod)
 
 虽说这种方案也能实现事件的分发，但是在不同类型载体间使用 method swizzling 还是应该避免的，对其他开发者不是很友好。并且这种方案也存在依赖 YTXModule 是否替换了 UIApplicationDelegate 的代理方法问题，如果没有，组件方是无法捕获事件的。
 
+<!--more-->
+
 ## 一种更加优雅的方案
 
 > 分发、代理

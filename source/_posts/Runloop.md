@@ -13,7 +13,7 @@ Tags: ios
 - 监控应用卡顿
 - 性能优化
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVF5ChLqicEMicHL29cjNDL6wJjaASSXNVhFHgWbeeLBNLhzH7UmicQRsRib2C8j3LwlgXIb6rlFjibAo1Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![2020-12-16-4.12.57.png](https://i.loli.net/2020/12/16/bF3XPHuQE9yoqxG.png)
 
 ## 一、线程保活
 
@@ -86,9 +86,11 @@ Tags: ios
 
 通过在run方法中加入上面代码,让线程一直不死,打印屏幕界面:
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVF5ChLqicEMicHL29cjNDL6wJIgkzhFw8oCN7ltl9LuicxSbhwWtHSekjQ1r9Ro4DbXS2XSHMfAjPLXw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![2020-12-16-4.14.23.png](https://i.loli.net/2020/12/16/bGvNnoDlcUdYy74.png)
 
 好像上面已经满足了要求,达到了线程不死的状态,但是能不能在销毁页面控制器的时候,也销毁定时器,并且随时停掉定时器.
+
+<!--more-->
 
 ### 情景3
 
@@ -100,7 +102,7 @@ Tags: ios
 
 下面直接用代码来解释,里面已经写明了代码思路,下面是A页面->B页面->A页面
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVF5ChLqicEMicHL29cjNDL6wJouc4cMXa4qBCUbWe3ATuuoen7zHnT8GktgHxD8FMh1GQyHQv7ib2EWw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![2020-12-16-4.14.32.png](https://i.loli.net/2020/12/16/I5ULo7fuzgTEmct.png)
 
 ```
 @interface ViewController ()
@@ -418,7 +420,7 @@ dispatch_queue_t queue = dispatch_queue_create("myqueue", DISPATCH_QUEUE_SERIAL)
 在实际项目开发中,使用NSTimer解决定时发送任务的需求,但是还是会产生循环引用,今天讲述本项目中的解决方案.
 循环引用（Circular Reference）是指两个对象之间相互强引用，两者无法按时释放，从而导致内存泄露.如下:
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVF5ChLqicEMicHL29cjNDL6wJhpW4UHupiaM4YhZEibAlhVl0HicLnDHQiaKMKiaEltnK2ia2OshhvGicpuYicg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![2020-12-16-4.14.47.png](https://i.loli.net/2020/12/16/f8IKlHWxghdbcwS.png)
 
 发现两者相互引用,都不能得以释放,造成了循环引用
 
@@ -426,7 +428,7 @@ dispatch_queue_t queue = dispatch_queue_create("myqueue", DISPATCH_QUEUE_SERIAL)
 
 引入一个对象proxy,proxy弱引用self,然后proxy传入NSTimer. self强引用NSTimer, NSTimer强引用proxy,proxy弱引用着self,这样通过弱引用解决了相互引用,就不会造成环..本项目中使用的方法是引入中间控件HCCProxy1
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVF5ChLqicEMicHL29cjNDL6wJUsxWl4ESndpWKSP8aJyNNeuibTeCCwdics8mAfPyWgDbXV296ASLrXHQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![2020-12-16-4.14.54.png](https://i.loli.net/2020/12/16/8c2TWPbS35avn6t.png)
 
 定义一个继承自NSObject的中间代理对象HCCProxy1,ViewController不持有timer,而是持有HCCProxy1实例, 让HCCProxy1实例弱引用ViewController, timer强引用HCCProxy1实例,如下:
 

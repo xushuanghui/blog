@@ -1,6 +1,6 @@
 ---
 title: NSBlockOperation
-date: 2020-12-16 15:04:33
+date: 2020-11-16 15:04:33
 Tags: ios
 ---
 
@@ -51,11 +51,11 @@ dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), 
 
 - finish
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVEOzrlgORPH1lbgLvcqNV7Mqib2ibPvzEth7h6ib1Ej3UIrAG0YICkxZednBgFzpPptL9tBLtYVCtwAA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
-
 **分析**
 
 初始化时传入了一个 block，block 中含有 operation 对象的访问，即发生了对象的捕获。但是现在是对象的创建过程中，operation 还没有被初始化出来，block这时捕获的是 operation 当前的值，即 operation = nil。
+
+<!--more-->
 
 ### 1.2 
 
@@ -193,11 +193,9 @@ dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), 
 
 - 只有 -[MyBlockOperation dealloc]
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVEOzrlgORPH1lbgLvcqNV7MyQQKok7ibzFqdXicTvOgVKPicS7OCnERNNV0829ANCMm3H7gGAOElJfkw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
-
 这里加入了 __weak 修饰符，对象创建后，发现引用计数为 0 就被释放了，所以 block 不执行。这部分属于内存管理的知识点。
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVEOzrlgORPH1lbgLvcqNV7MQ6aYGQarYdWgUFCPpiaKA2Wv70tiakic80ehrfBIibmAbHy3vexiaubHPvg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
 
 那么我们要怎么做，才能既捕获到 operation 又不会导致循环引用呢？
 
@@ -230,8 +228,6 @@ dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), 
 **答案**
 
 - cancelled, -[MyBlockOperation dealloc]
-
-![图片](https://mmbiz.qpic.cn/mmbiz_png/3QD99b9DjVEOzrlgORPH1lbgLvcqNV7MENa9qeV5z47OjBARZXTxUUFfR9dGLXam9kY1RWVAgHibyEMeGvnEnqg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 **分析**
 

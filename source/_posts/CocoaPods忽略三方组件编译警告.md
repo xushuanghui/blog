@@ -1,5 +1,5 @@
 ---
-title: cocoaPods忽略第三方组件警告
+title: cocoaPods忽略警告
 date: 2019-08-30 20:23:11
 Tags: cocoapods
 ---
